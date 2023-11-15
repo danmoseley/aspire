@@ -11,7 +11,7 @@ updates:
   schedule:
     interval: daily
     # Run at 10pm Pacific time
-    time: "19:04"
+    time: "19:16"
     timezone: "America/Los_Angeles"
   open-pull-requests-limit: 10
       # allow:
