@@ -4,48 +4,46 @@ registries:
     type: nuget-feed
     url: https://api.nuget.org/v3/index.json
 updates:
-- package-ecosystem: nuget
-  directory: "/"
-  registries:
-    - public-nuget
-  schedule:
-    interval: daily
-    time: "18:41"
-    timezone: "America/Los_Angeles"
-  open-pull-requests-limit: 25
-  groups:
-    Azure:
-      patterns:
-        - "Azure.*"
-        - "Microsoft.Azure.*"
-        - "Microsoft.Extensions.Azure"
-    AspNetCoreHealthChecks:
-      patterns:
-        - "AspNetCore.HealthChecks.*"
-    AspNetCore:
-      patterns:
-        - "Microsoft.AspNetCore.*"
-        - "Microsoft.Extensions.Features"
-    MicrosoftExtensions:
-      patterns:
-        - "Microsoft.Extensions.*"
-    EntityFrameworkCore:
-      patterns:
-        - "Microsoft.EntityFrameworkCore.*"
-    FluentUi:
-      patterns:
-        - "Microsoft.FluentUI.*"
-    OpenTelemetry:
-      patterns:
-        - "OpenTelemetry.*"
-    Npgsql:
-      patterns:
-        - "Npgsql.*"
-    MicrosoftDotNet:
-      patterns:
-        "Microsoft.DotNet.*"
-    Grpc:
-      patterns:
-        "Grpc.*"
-  labels:
+  - package-ecosystem: nuget
+    directory: "/"
+    registries:
+      - public-nuget
+    schedule:
+      interval: daily
+      time: "18:43"
+      timezone: "America/Los_Angeles"
+    open-pull-requests-limit: 25
+    groups:
+      Azure:
+        patterns:
+          - "Azure.*"
+          - "Microsoft.Azure.*"
+          - "Microsoft.Extensions.Azure"
+      AspNetCoreHealthChecks:
+        patterns:
+          - "AspNetCore.HealthChecks.*"
+      AspNetCore:
+        patterns:
+          - "Microsoft.AspNetCore.*"
+          - "Microsoft.Extensions.Features"
+      MicrosoftExtensions:
+        patterns:
+          - "Microsoft.Extensions.*"
+      EntityFrameworkCore:
+        patterns:
+          - "Microsoft.EntityFrameworkCore.*"
+      FluentUi:
+        patterns:
+          - "Microsoft.FluentUI.*"
+      OpenTelemetry:
+        patterns:
+          - "OpenTelemetry.*"
+      Npgsql:
+        patterns:
+          - "Npgsql.*"
+      MicrosoftDotNet:
+        patterns: "Microsoft.DotNet.*"
+      Grpc:
+        patterns: "Grpc.*"
+    labels:
       - "area-codeflow"
