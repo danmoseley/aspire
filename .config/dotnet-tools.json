@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "dotnet-coverage": {
-      "version": "17.8.2",
+      "version": "17.9.3",
       "commands": [
         "dotnet-coverage"
       ]
@@ -15,7 +15,7 @@
       ]
     },
     "PowerShell": {
-      "version": "7.3.3",
+      "version": "7.3.9",
       "commands": [
         "pwsh"
       ]
