@@ -10,8 +10,7 @@ updates:
     - public-nuget
   schedule:
     interval: daily
-    # Run at 10pm Pacific time
-    time: "17:48"
+    time: "17:57"
     timezone: "America/Los_Angeles"
   open-pull-requests-limit: 25
       # allow:
@@ -61,6 +60,4 @@ updates:
   #   - dependency-name: "Selenium.*"                           # needs to be done manually because other packages need to be compiled with these new versions
       
   labels:
-      - "nuget"
-      - "dependencies"
-      - "area/upstream"
+      - "area-codeflow"
