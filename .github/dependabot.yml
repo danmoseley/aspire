@@ -10,7 +10,7 @@ updates:
       - public-nuget
     schedule:
       interval: daily
-      time: "18:43"
+      time: "18:54"
       timezone: "America/Los_Angeles"
     open-pull-requests-limit: 25
     groups:
@@ -42,8 +42,10 @@ updates:
         patterns:
           - "Npgsql.*"
       MicrosoftDotNet:
-        patterns: "Microsoft.DotNet.*"
+        patterns:
+          - "Microsoft.DotNet.*"
       Grpc:
-        patterns: "Grpc.*"
+        patterns:
+          - "Grpc.*"
     labels:
       - "area-codeflow"
