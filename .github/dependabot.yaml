@@ -11,9 +11,9 @@ updates:
   schedule:
     interval: daily
     # Run at 10pm Pacific time
-    time: "17:46"
+    time: "17:48"
     timezone: "America/Los_Angeles"
-  open-pull-requests-limit: 10
+  open-pull-requests-limit: 25
       # allow:
       # # Allow updates for Lodash
       # - dependency-name: "lodash"
