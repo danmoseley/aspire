@@ -2,7 +2,6 @@ version: 2
 registries:
   public-nuget:
     type: nuget-feed
-    url: https://api.nuget.org/v3/index.json
 updates:
   - package-ecosystem: nuget
     directory: "/"
@@ -10,7 +9,7 @@ updates:
       - public-nuget
     schedule:
       interval: daily
-      time: "18:54"
+      time: "19:27"
       timezone: "America/Los_Angeles"
     open-pull-requests-limit: 25
     groups:
