@@ -10,7 +10,7 @@ updates:
     - public-nuget
   schedule:
     interval: daily
-    time: "19:12"
+    time: "19:18"
     timezone: "America/Los_Angeles"
   open-pull-requests-limit: 25
       # allow:
