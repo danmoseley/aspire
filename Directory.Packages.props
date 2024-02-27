@@ -7,7 +7,7 @@
   <ItemGroup>
     <!-- Azure SDK for .NET dependencies -->
     <PackageVersion Include="Azure.AI.OpenAI" Version="1.0.0-beta.13" />
-    <PackageVersion Include="Azure.Data.Tables" Version="12.8.3" />
+    <PackageVersion Include="Azure.Data.Tables" Version="12.7.0" />
     <PackageVersion Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.3.1" />
     <PackageVersion Include="Azure.Identity" Version="1.10.4" />
     <PackageVersion Include="Azure.Search.Documents" Version="11.5.1" />
@@ -34,7 +34,7 @@
     <!-- Roslyn dependencies -->
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.8.0" />
     <!-- AspNetCore.HealthChecks dependencies (3rd party packages) -->
-    <PackageVersion Include="AspNetCore.HealthChecks.Azure.Data.Tables" Version="8.0.0" />
+    <PackageVersion Include="AspNetCore.HealthChecks.Azure.Data.Tables" Version="7.0.0" />
     <PackageVersion Include="AspNetCore.HealthChecks.Azure.KeyVault.Secrets" Version="8.0.0" />
     <PackageVersion Include="AspNetCore.HealthChecks.Azure.Storage.Blobs" Version="8.0.0" />
     <PackageVersion Include="AspNetCore.HealthChecks.Azure.Storage.Queues" Version="8.0.0" />
@@ -50,7 +50,7 @@
     <PackageVersion Include="Microsoft.DotNet.RemoteExecutor" Version="$(MicrosoftDotNetRemoteExecutorPackageVersion)" />
     <PackageVersion Include="Microsoft.DotNet.XUnitExtensions" Version="$(MicrosoftDotNetXUnitExtensionsPackageVersion)" />
     <!-- sql client dependencies -->
-    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.1.5" />
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.0.5" />
     <!-- efcore dependencies -->
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Cosmos" Version="$(MicrosoftEntityFrameworkCoreCosmosPackageVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(MicrosoftEntityFrameworkCoreSqlServerPackageVersion)" />
@@ -68,7 +68,7 @@
     <PackageVersion Include="Microsoft.Extensions.Primitives" Version="$(MicrosoftExtensionsPrimitivesPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="$(MicrosoftExtensionsHttpResiliencePackageVersion)" />
     <!-- external dependencies -->
-    <PackageVersion Include="Confluent.Kafka" Version="2.3.0" />
+    <PackageVersion Include="Confluent.Kafka" Version="1.0.0" />
     <PackageVersion Include="Dapper" Version="2.1.28" />
     <PackageVersion Include="Dapr.AspNetCore" Version="1.12.0" />
     <PackageVersion Include="DnsClient" Version="1.7.0" />
@@ -101,7 +101,7 @@
     <PackageVersion Include="StackExchange.Redis" Version="2.7.17" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageVersion Include="System.IO.Hashing" Version="8.0.0" />
-    <PackageVersion Include="Yarp.ReverseProxy" Version="2.1.0" />
+    <PackageVersion Include="Yarp.ReverseProxy" Version="2.0.0" />
     <PackageVersion Include="System.CommandLine" Version="2.0.0-beta4.24102.1" />
     <!-- Open Telemetry -->
     <PackageVersion Include="Npgsql.OpenTelemetry" Version="8.0.1" />
@@ -113,8 +113,8 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.EventCounters" Version="1.5.1-alpha.1" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.GrpcNetClient" Version="1.6.0-beta.3" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.7.0" />
-    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.7.0" />
-    <PackageVersion Include="OpenTelemetry.Instrumentation.Process" Version="0.5.0-beta.4" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.6.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Process" Version="0.4.0-beta.4" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.7.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.SqlClient" Version="1.6.0-beta.3" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.StackExchangeRedis" Version="1.0.0-rc9.13" />
@@ -122,13 +122,13 @@
     <PackageVersion Include="MicroBuild.Plugins.SwixBuild.Dotnet" Version="1.1.87-gba258badda" />
     <PackageVersion Include="Microsoft.DotNet.Build.Tasks.Workloads" Version="8.0.0-beta.23564.4" />
     <PackageVersion Include="Microsoft.Signed.Wix" Version="1.0.0-v3.14.0.5722" />
-    <PackageVersion Include="Microsoft.DotNet.Build.Tasks.Installers" Version="8.0.0-beta.23564.4" />
+    <PackageVersion Include="Microsoft.DotNet.Build.Tasks.Installers" Version="7.0.0-beta.23564.4" />
     <!-- unit test dependencies -->
-    <PackageVersion Include="bUnit" Version="1.26.64" />
+    <PackageVersion Include="bUnit" Version="1.24.64" />
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="$(MicrosoftExtensionsDiagnosticsTestingPackageVersion)" />
-    <PackageVersion Include="Testcontainers.RabbitMq" Version="3.7.0" />
+    <PackageVersion Include="Testcontainers.RabbitMq" Version="1.7.0" />
     <!-- Pinned version for Component Governance - Remove when root dependencies are updated -->
-    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="Newtonsoft.Json" Version="11.0.3" />
     <!-- Introduced by Microsoft.Azure.Cosmos, https://github.com/Azure/azure-cosmos-dotnet-v3/issues/4302 -->
   </ItemGroup>
 </Project>
