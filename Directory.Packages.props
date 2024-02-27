@@ -1,6 +1,7 @@
 <Project>
   <!-- Workaround https://github.com/dependabot/dependabot-core/issues/8490 -->
   <Import Project="eng/Versions.props" Condition="'$(MajorVersion)' == ''"/>
+  <NetCurrent>net8.0</NetCurrent>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
