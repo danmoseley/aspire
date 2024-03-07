@@ -18,6 +18,9 @@ updates:
       - dependency-name: "Microsoft.DotNet.Arcade.Sdk"
       - dependency-name: "Microsoft.DotNet.Helix.Sdk"
       - dependency-name: "Microsoft.DotNet.SharedFramework.Sdk"
+      - dependency-name: "Microsoft.Build.RemoteExecutor"
+      - dependency-name: "Microsoft.DotNet.Build.Tasks.Workloads"
+      - dependency-name: "Microsoft.DotNet.Build.Tasks.Installers"
       - dependency-name: "Microsoft.Build.NoTargets"
     groups:
       Azure:
