@@ -87,7 +87,7 @@
     <PackageVersion Include="Microsoft.Orleans.Persistence.AzureStorage" Version="8.1.0-nightly.20240126.1" />
     <PackageVersion Include="Microsoft.Orleans.Sdk" Version="8.1.0-nightly.20240126.1" />
     <PackageVersion Include="Microsoft.Orleans.Server" Version="8.1.0-nightly.20240126.1" />
-    <PackageVersion Include="Microsoft.Orleans.Reminders.AzureStorage" Version="8.1.0-nightly.20240126.1" />
+    <PackageVersion Include="Microsoft.Orleans.Reminders.AzureStorage" Version="8.1.0-preview2" />
     <PackageVersion Include="MySqlConnector.DependencyInjection" Version="2.3.5" />
     <PackageVersion Include="MySqlConnector.Logging.Microsoft.Extensions.Logging" Version="2.1.0" />
     <PackageVersion Include="Npgsql.DependencyInjection" Version="8.0.2" />
