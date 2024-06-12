@@ -141,7 +141,7 @@
     <PackageVersion Include="Microsoft.DotNet.XUnitExtensions" Version="$(MicrosoftDotNetXUnitExtensionsPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="$(MicrosoftExtensionsDiagnosticsTestingPackageVersion)" />
     <PackageVersion Include="Microsoft.NET.Runtime.WorkloadTesting.Internal" Version="$(MicrosoftNETRuntimeWorkloadTestingInternalVersion)" />
-    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageVersion Include="Testcontainers.MongoDb" Version="$(TestcontainersPackageVersion)" />
     <PackageVersion Include="Testcontainers.MsSql" Version="$(TestcontainersPackageVersion)" />
     <PackageVersion Include="Testcontainers.MySql" Version="$(TestcontainersPackageVersion)" />
