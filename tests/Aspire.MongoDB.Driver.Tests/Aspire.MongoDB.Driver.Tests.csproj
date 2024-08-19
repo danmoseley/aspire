@@ -12,6 +12,8 @@
 
     <None Include="$(RepoRoot)src\Components\Aspire.MongoDB.Driver\ConfigurationSchema.json" CopyToOutputDirectory="PreserveNewest" />
 
+    <PackageReference Include="Newtonsoft.Json" />
+
     <ProjectReference Include="..\..\src\Components\Aspire.MongoDB.Driver\Aspire.MongoDB.Driver.csproj" />
     <ProjectReference Include="..\Aspire.Components.Common.Tests\Aspire.Components.Common.Tests.csproj" />
 
