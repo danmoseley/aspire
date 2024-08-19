@@ -9,6 +9,7 @@
   <ItemGroup>
     <None Include="$(RepoRoot)src\Components\Aspire.Milvus.Client\ConfigurationSchema.json" CopyToOutputDirectory="PreserveNewest" />
     <Compile Include="$(RepoRoot)src\Aspire.Hosting.Milvus\MilvusContainerImageTags.cs" />
+    <PackageReference Include="Newtonsoft.Json" />
 
     <PackageReference Include="Testcontainers.Milvus" />
 
