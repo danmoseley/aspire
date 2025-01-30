@@ -2,7 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using Aspire.Components.ConformanceTests;
+using Azure.Identity;
 using Azure.Messaging.EventHubs;
+using Azure.Storage.Blobs;
 using Microsoft.DotNet.RemoteExecutor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +18,8 @@ public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMess
     // Fake connection string for cases when credentials are unavailable and need to switch to raw connection string
     protected const string ConnectionString = "Endpoint=sb://aspireeventhubstests.servicebus.windows.net/;" +
                                               "SharedAccessKeyName=fake;SharedAccessKey=fake;EntityPath=MyHub";
+
+    private const string BlobsConnectionString = "https://fake.blob.core.windows.net";
 
     protected override ServiceLifetime ServiceLifetime => ServiceLifetime.Singleton;
 
@@ -32,17 +36,19 @@ public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMess
           "Aspire": {
             "Azure": {
               "Messaging": {
-                "ServiceBus": {
-                  "Namespace": "YOUR_NAMESPACE",
-                  "DisableHealthChecks": false,
-                  "ClientOptions": {
-                    "ConnectionIdleTimeout": "00:01",
-                    "EnableCrossEntityTransactions": true,
-                    "RetryOptions": {
-                      "Mode": "Fixed",
-                      "MaxDelay": "00:03"
-                    },
-                    "TransportType": "AmqpWebSockets"
+                "EventHubs": {
+                  "EventProcessorClient": {
+                      "DisableHealthChecks": false,
+                      "BlobClientServiceKey": "fake.s.k",
+                      "ClientOptions": {
+                        "ConnectionIdleTimeout": "00:01",
+                        "EnableCrossEntityTransactions": true,
+                        "RetryOptions": {
+                          "Mode": "Fixed",
+                          "MaxDelay": "00:03"
+                        },
+                        "TransportType": "AmqpWebSockets"
+                     }
                   }
                 }
               }
@@ -72,6 +78,9 @@ public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMess
         {
             builder.AddKeyedAzureEventProcessorClient(key);
         }
+
+        var blobClient = new BlobServiceClient(new Uri(BlobsConnectionString), new DefaultAzureCredential());
+        builder.Services.AddKeyedSingleton("blobs", blobClient);
     }
 
     [Fact]
