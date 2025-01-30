@@ -3,9 +3,11 @@
 
 using Aspire.Components.ConformanceTests;
 using Azure.Messaging.EventHubs;
+using Microsoft.DotNet.RemoteExecutor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Xunit;
 
 namespace Aspire.Azure.Messaging.EventHubs.Tests;
 
@@ -17,13 +19,13 @@ public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMess
 
     protected override ServiceLifetime ServiceLifetime => ServiceLifetime.Singleton;
 
-    protected override string ActivitySourceName => "Azure.Messaging.ServiceBus.ServiceBusReceiver";
+    protected override string ActivitySourceName => "Aspire.Azure.Messaging.EventHubs.EventProcessorClient";
 
-    protected override string[] RequiredLogCategories => new string[] { "Azure.Messaging.ServiceBus" };
+    protected override string[] RequiredLogCategories => new string[] { "Aspire.Azure.Messaging.EventHubs" };
 
     protected override bool SupportsKeyedRegistrations => true;
 
-    protected override string? ConfigurationSectionName => "Aspire:Azure:Messaging:ServiceBus";
+    protected override string? ConfigurationSectionName => "Aspire.Azure.Messaging.EventHubs";
 
     protected override string ValidJsonConfig => """
         {
@@ -51,15 +53,14 @@ public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMess
 
     protected override (string json, string error)[] InvalidJsonToErrorMessage => new[]
         {
-            ("""{"Aspire": { "Azure": { "Messaging":{ "ServiceBus": {"ClientOptions": {"CustomEndpointAddress": "EndPoint"}}}}}}""", "Value does not match format \"uri\""),
-            ("""{"Aspire": { "Azure": { "Messaging":{ "ServiceBus": {"ClientOptions": {"EnableCrossEntityTransactions": "false"}}}}}}""", "Value is \"string\" but should be \"boolean\""),
-            ("""{"Aspire": { "Azure": { "Messaging":{ "ServiceBus": {"ClientOptions": {"RetryOptions": {"Mode": "Fast"}}}}}}}""", "Value should match one of the values specified by the enum"),
-            ("""{"Aspire": { "Azure": { "Messaging":{ "ServiceBus": {"ClientOptions": {"RetryOptions": {"TryTimeout": "3S"}}}}}}}""", "The string value is not a match for the indicated regular expression"),
-            ("""{"Aspire": { "Azure": { "Messaging":{ "ServiceBus": {"ClientOptions": {"TransportType": "HTTP"}}}}}}""", "Value should match one of the values specified by the enum")
+             ("""{"Aspire": { "Azure": { "Messaging" :{ "EventHubs": { "EventHubConsumerClient": { "DisableHealthChecks": "true"}}}}}}""", "Value is \"string\" but should be \"boolean\""),
         };
 
     protected override void PopulateConfiguration(ConfigurationManager configuration, string? key = null)
-         { return; }
+        => configuration.AddInMemoryCollection(new KeyValuePair<string, string?>[1]
+        {
+            new("Aspire:Azure:Messaging:EventHubs:EventProcessorClient:ConnectionString", ConnectionString)
+        });
 
     protected override void RegisterComponent(HostApplicationBuilder builder, Action<AzureMessagingEventHubsProducerSettings>? configure = null, string? key = null)
     {
@@ -73,6 +74,14 @@ public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMess
         }
     }
 
+    [Fact]
+    public void TracingEnablesTheRightActivitySource()
+        => RemoteExecutor.Invoke(() => ActivitySourceTest(key: null), EnableTelemetry()).Dispose();
+
+    [Fact]
+    public void TracingEnablesTheRightActivitySource_Keyed()
+        => RemoteExecutor.Invoke(() => ActivitySourceTest(key: "key"), EnableTelemetry()).Dispose();
+
     protected override void SetHealthCheck(AzureMessagingEventHubsProducerSettings options, bool enabled)
         => options.DisableHealthChecks = !enabled;
 
@@ -85,5 +94,10 @@ public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMess
     protected override void TriggerActivity(EventProcessorClient service)
     {
 //
+    }
+
+    private static RemoteInvokeOptions EnableTelemetry()
+    {
+        return new RemoteInvokeOptions();
     }
 }
