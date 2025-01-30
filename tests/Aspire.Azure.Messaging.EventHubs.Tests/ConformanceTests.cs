@@ -1,7 +1,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using System.Diagnostics;
 using Aspire.Components.ConformanceTests;
 using Azure.Messaging.EventHubs;
 using Microsoft.Extensions.Configuration;
@@ -12,10 +11,9 @@ namespace Aspire.Azure.Messaging.EventHubs.Tests;
 
 public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMessagingEventHubsProducerSettings>
 {
-    // Roles: Azure Service Bus Data Owner
-    public const string FullyQualifiedNamespace = "aspireservicebustests.servicebus.windows.net";
     // Fake connection string for cases when credentials are unavailable and need to switch to raw connection string
-    protected const string ConnectionString = "Endpoint=sb://foo.servicebus.windows.net/;SharedAccessKeyName=fake;SharedAccessKey=fake";
+    protected const string ConnectionString = "Endpoint=sb://aspireeventhubstests.servicebus.windows.net/;" +
+                                              "SharedAccessKeyName=fake;SharedAccessKey=fake;EntityPath=MyHub";
 
     protected override ServiceLifetime ServiceLifetime => ServiceLifetime.Singleton;
 
@@ -65,7 +63,6 @@ public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMess
 
     protected override void RegisterComponent(HostApplicationBuilder builder, Action<AzureMessagingEventHubsProducerSettings>? configure = null, string? key = null)
     {
-        Debug.Fail("oopsy");
         if (key is null)
         {
             builder.AddAzureEventProcessorClient("sb");
