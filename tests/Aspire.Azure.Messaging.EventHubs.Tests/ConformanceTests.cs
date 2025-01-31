@@ -39,7 +39,7 @@ public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMess
                 "EventHubs": {
                   "EventProcessorClient": {
                       "DisableHealthChecks": false,
-                      "BlobClientServiceKey": "fake.s.k",
+                      "BlobClientServiceKey": "blobs",
                       "ClientOptions": {
                         "ConnectionIdleTimeout": "00:01",
                         "EnableCrossEntityTransactions": true,
