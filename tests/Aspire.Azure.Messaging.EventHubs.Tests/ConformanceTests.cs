@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Aspire.Azure.Messaging.EventHubs.Tests;
 
-public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMessagingEventHubsProducerSettings>
+public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMessagingEventHubsProcessorSettings>
 {
     // Fake connection string for cases when credentials are unavailable and need to switch to raw connection string
     protected const string ConnectionString = "Endpoint=sb://aspireeventhubstests.servicebus.windows.net/;" +
@@ -25,11 +25,11 @@ public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMess
 
     protected override string ActivitySourceName => "Aspire.Azure.Messaging.EventHubs.EventProcessorClient";
 
-    protected override string[] RequiredLogCategories => new string[] { "Aspire.Azure.Messaging.EventHubs" };
+    protected override string[] RequiredLogCategories => ["Aspire.Azure.Messaging.EventHubs"];
 
     protected override bool SupportsKeyedRegistrations => true;
 
-    protected override string? ConfigurationSectionName => "Aspire.Azure.Messaging.EventHubs";
+    protected override string? ConfigurationSectionName => "Aspire:Azure:Messaging:EventHubs:EventProcessorClient";
 
     protected override string ValidJsonConfig => """
         {
@@ -57,30 +57,39 @@ public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMess
         }
         """;
 
-    protected override (string json, string error)[] InvalidJsonToErrorMessage => new[]
-        {
+    protected override (string json, string error)[] InvalidJsonToErrorMessage =>
+        [
              ("""{"Aspire": { "Azure": { "Messaging" :{ "EventHubs": { "EventHubConsumerClient": { "DisableHealthChecks": "true"}}}}}}""", "Value is \"string\" but should be \"boolean\""),
-        };
+        ];
 
     protected override void PopulateConfiguration(ConfigurationManager configuration, string? key = null)
-        => configuration.AddInMemoryCollection(new KeyValuePair<string, string?>[1]
-        {
+        => configuration.AddInMemoryCollection(
+        [
             new("Aspire:Azure:Messaging:EventHubs:EventProcessorClient:ConnectionString", ConnectionString)
-        });
+        ]);
 
-    protected override void RegisterComponent(HostApplicationBuilder builder, Action<AzureMessagingEventHubsProducerSettings>? configure = null, string? key = null)
+    protected override void RegisterComponent(HostApplicationBuilder builder, Action<AzureMessagingEventHubsProcessorSettings>? configure = null, string? key = null)
     {
         if (key is null)
         {
-            builder.AddAzureEventProcessorClient("sb");
+            builder.AddAzureEventProcessorClient("ehps", ConfigureCredentials);
         }
         else
         {
-            builder.AddKeyedAzureEventProcessorClient(key);
+            builder.AddKeyedAzureEventProcessorClient(key, ConfigureCredentials);
         }
 
         var blobClient = new BlobServiceClient(new Uri(BlobsConnectionString), new DefaultAzureCredential());
         builder.Services.AddKeyedSingleton("blobs", blobClient);
+
+        void ConfigureCredentials(AzureMessagingEventHubsProcessorSettings settings)
+        {
+            if (CanConnectToServer)
+            {
+                settings.Credential = new DefaultAzureCredential();
+            }
+            configure?.Invoke(settings);
+        }
     }
 
     [Fact]
@@ -91,18 +100,18 @@ public class ConformanceTests : ConformanceTests<EventProcessorClient, AzureMess
     public void TracingEnablesTheRightActivitySource_Keyed()
         => RemoteExecutor.Invoke(() => ActivitySourceTest(key: "key"), EnableTelemetry()).Dispose();
 
-    protected override void SetHealthCheck(AzureMessagingEventHubsProducerSettings options, bool enabled)
+    protected override void SetHealthCheck(AzureMessagingEventHubsProcessorSettings options, bool enabled)
         => options.DisableHealthChecks = !enabled;
 
-    protected override void SetMetrics(AzureMessagingEventHubsProducerSettings options, bool enabled)
+    protected override void SetMetrics(AzureMessagingEventHubsProcessorSettings options, bool enabled)
         => throw new NotImplementedException();
 
-    protected override void SetTracing(AzureMessagingEventHubsProducerSettings options, bool enabled)
+    protected override void SetTracing(AzureMessagingEventHubsProcessorSettings options, bool enabled)
         => options.DisableTracing = !enabled;
 
     protected override void TriggerActivity(EventProcessorClient service)
     {
-//
+        //
     }
 
     private static RemoteInvokeOptions EnableTelemetry()
