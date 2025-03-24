@@ -11,10 +11,13 @@ public class NewUpAndBuildSupportProjectTemplates(ITestOutputHelper testOutput) 
     [Theory]
     // [MemberData(nameof(TestDataForNewAndBuildTemplateTests), parameters: "aspire-apphost")]
     // [MemberData(nameof(TestDataForNewAndBuildTemplateTests), parameters: "aspire-servicedefaults")]
-    [MemberData(nameof(TestDataForNewAndBuildTemplateTests), parameters: "aspire-mstest")]
-    [MemberData(nameof(TestDataForNewAndBuildTemplateTests), parameters: "aspire-nunit")]
-    [MemberData(nameof(TestDataForNewAndBuildTemplateTests), parameters: "aspire-xunit")]
-    public async Task CanNewAndBuild(string templateName, TestSdk sdk, TestTargetFramework tfm, TestTemplatesInstall templates, string? error)
+    [MemberData(nameof(TestDataForNewAndBuildTemplateTests), parameters: new object[] { "aspire-mstest", "" })]
+    [MemberData(nameof(TestDataForNewAndBuildTemplateTests), parameters: new object[] { "aspire-nunit", "" })]
+    [MemberData(nameof(TestDataForNewAndBuildTemplateTests), parameters: new object[] { "aspire-xunit", "" })]
+    [MemberData(nameof(TestDataForNewAndBuildTemplateTests), parameters: new object[] { "aspire-xunit", "--xunit-version v2" })]
+    [MemberData(nameof(TestDataForNewAndBuildTemplateTests), parameters: new object[] { "aspire-xunit", "--xunit-version v3" })]
+    [MemberData(nameof(TestDataForNewAndBuildTemplateTests), parameters: new object[] { "aspire-xunit", "--xunit-version v3mtp" })]
+    public async Task CanNewAndBuild(string templateName, string extraArgs, TestSdk sdk, TestTargetFramework tfm, TestTemplatesInstall templates, string? error)
     {
         var id = GetNewProjectId(prefix: $"new_build_{templateName}_{tfm.ToTFMString()}");
         string config = "Debug";
@@ -43,6 +46,7 @@ public class NewUpAndBuildSupportProjectTemplates(ITestOutputHelper testOutput) 
                 template: "aspire",
                 testOutput: _testOutput,
                 buildEnvironment: buildEnvToUse,
+                extraArgs: extraArgs,
                 targetFramework: tfm,
                 customHiveForTemplates: templateHive.CustomHiveDirectory);
 
@@ -52,6 +56,7 @@ public class NewUpAndBuildSupportProjectTemplates(ITestOutputHelper testOutput) 
                                         project: project,
                                         tfm: tfm,
                                         buildEnvironment: buildEnvToUse,
+                                        extraArgs: extraArgs,
                                         templateHive: templateHive);
 
             await project.BuildAsync(extraBuildArgs: [$"-c {config}"], workingDirectory: testProjectDir);
