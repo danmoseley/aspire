@@ -28,35 +28,25 @@ public class ProjectNameValidatorTests
     }
 
     [Theory]
-    [InlineData("validName")]
-    [InlineData("valid_name")]
-    [InlineData("valid.name")]
-    [InlineData("valid_name_1")]
-    public void IsProjectNameValid_ReturnsTrue_ForValidNames(string projectName)
+    [InlineData("validName", true)]
+    [InlineData("valid_name", true)]
+    [InlineData("valid.name", true)]
+    [InlineData("valid_name_1", true)]
+    [InlineData("invalid@name", false)]
+    [InlineData("invalid$name", false)]
+    [InlineData("invalid-name", false)]
+    [InlineData("invalid+name", false)]
+    [InlineData("invalid name", false)]
+    [InlineData("-invalidName", false)]
+    [InlineData("invalidName-", false)]
+    [InlineData("@invalidName", false)]
+    [InlineData("invalidName@", false)]
+    public void IsProjectNameValid_ReturnsExpectedResult(string projectName, bool expectedResult)
     {
         // Act
         var result = ProjectNameValidator.IsProjectNameValid(projectName);
 
         // Assert
-        Assert.True(result);
-    }
-
-    [Theory]
-    [InlineData("invalid@name")]
-    [InlineData("invalid$name")]
-    [InlineData("invalid-name")]
-    [InlineData("invalid+name")]
-    [InlineData("invalid name")]
-    [InlineData("-invalidName")]
-    [InlineData("invalidName-")]
-    [InlineData("@invalidName")]
-    [InlineData("invalidName@")]
-    public void IsProjectNameValid_ReturnsFalse_ForInvalidNames(string projectName)
-    {
-        // Act
-        var result = ProjectNameValidator.IsProjectNameValid(projectName);
-
-        // Assert
-        Assert.False(result);
+        Assert.Equal(expectedResult, result);
     }
 }
