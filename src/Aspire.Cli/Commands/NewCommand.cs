@@ -99,8 +99,8 @@ internal sealed class NewCommand : BaseCommand
         }
         else if (!ProjectNameValidator.IsProjectNameValid(name))
         {
-            // Replace invalid characters with underscores 
-            var sanitizedName = ProjectNameValidator.GetInvalidCharsRegex().Replace(name, "_");
+            // Replace invalid characters with underscores
+            var sanitizedName = ProjectNameValidator.SanitizeProjectName(name);
             _interactionService.DisplayWarning($"Project name '{name}' contains invalid characters. Using '{sanitizedName}' instead.");
             name = sanitizedName;
         }
@@ -260,7 +260,7 @@ internal class NewCommandPrompter(IInteractionService interactionService) : INew
                 }
                 else
                 {
-                    var sanitizedName = ProjectNameValidator.GetInvalidCharsRegex().Replace(name, "_");
+                    var sanitizedName = ProjectNameValidator.SanitizeProjectName(name);
                     return ValidationResult.Warning($"Invalid project name. It will be sanitized to '{sanitizedName}'.");
                 }
             },
@@ -269,7 +269,7 @@ internal class NewCommandPrompter(IInteractionService interactionService) : INew
         // Apply sanitization if needed
         if (!ProjectNameValidator.IsProjectNameValid(name))
         {
-            var sanitizedName = ProjectNameValidator.GetInvalidCharsRegex().Replace(name, "_");
+            var sanitizedName = ProjectNameValidator.SanitizeProjectName(name);
             interactionService.DisplayWarning($"Project name '{name}' contains invalid characters. Using '{sanitizedName}' instead.");
             return sanitizedName;
         }
@@ -300,5 +300,10 @@ internal static partial class ProjectNameValidator
     {
         var regex = GetAssemblyNameRegex();
         return regex.IsMatch(projectName);
+    }
+
+    public static string SanitizeProjectName(string projectName)
+    {
+        return GetInvalidCharsRegex().Replace(projectName, "_");
     }
 }
