@@ -99,8 +99,8 @@ internal sealed class NewCommand : BaseCommand
         }
         else if (!ProjectNameValidator.IsProjectNameValid(name))
         {
-            // Sanitize the name if it's not valid
-            var sanitizedName = ProjectNameValidator.SanitizeProjectName(name);
+            // Replace invalid characters with underscores 
+            var sanitizedName = ProjectNameValidator.GetInvalidCharsRegex().Replace(name, "_");
             _interactionService.DisplayWarning($"Project name '{name}' contains invalid characters. Using '{sanitizedName}' instead.");
             name = sanitizedName;
         }
@@ -260,7 +260,7 @@ internal class NewCommandPrompter(IInteractionService interactionService) : INew
                 }
                 else
                 {
-                    var sanitizedName = ProjectNameValidator.SanitizeProjectName(name);
+                    var sanitizedName = ProjectNameValidator.GetInvalidCharsRegex().Replace(name, "_");
                     return ValidationResult.Warning($"Invalid project name. It will be sanitized to '{sanitizedName}'.");
                 }
             },
@@ -269,7 +269,7 @@ internal class NewCommandPrompter(IInteractionService interactionService) : INew
         // Apply sanitization if needed
         if (!ProjectNameValidator.IsProjectNameValid(name))
         {
-            var sanitizedName = ProjectNameValidator.SanitizeProjectName(name);
+            var sanitizedName = ProjectNameValidator.GetInvalidCharsRegex().Replace(name, "_");
             interactionService.DisplayWarning($"Project name '{name}' contains invalid characters. Using '{sanitizedName}' instead.");
             return sanitizedName;
         }
@@ -300,43 +300,5 @@ internal static partial class ProjectNameValidator
     {
         var regex = GetAssemblyNameRegex();
         return regex.IsMatch(projectName);
-    }
-
-    public static string SanitizeProjectName(string projectName)
-    {
-        // If the project name is already valid, return it as-is
-        if (IsProjectNameValid(projectName))
-        {
-            return projectName;
-        }
-
-        // Replace any invalid characters with underscores
-        var sanitized = GetInvalidCharsRegex().Replace(projectName, "_");
-        
-        // Ensure the name starts with a valid character (letter, number, or underscore)
-        if (sanitized.Length == 0 || !char.IsLetterOrDigit(sanitized[0]) && sanitized[0] != '_')
-        {
-            sanitized = "_" + sanitized;
-        }
-        
-        // Ensure the name ends with a valid character (letter, number, or underscore)
-        if (sanitized.Length == 0 || !char.IsLetterOrDigit(sanitized[^1]) && sanitized[^1] != '_')
-        {
-            sanitized = sanitized + "_";
-        }
-        
-        // Truncate if necessary to max length (255)
-        if (sanitized.Length > 255)
-        {
-            sanitized = sanitized[..255];
-            
-            // Ensure the last character is still valid after truncation
-            if (!char.IsLetterOrDigit(sanitized[^1]) && sanitized[^1] != '_')
-            {
-                sanitized = sanitized[..^1] + "_";
-            }
-        }
-        
-        return sanitized;
     }
 }

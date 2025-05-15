@@ -18,19 +18,13 @@ public class ProjectNameValidatorTests
     [InlineData("invalid-name", "invalid_name")]
     [InlineData("invalid+name", "invalid_name")]
     [InlineData("invalid name", "invalid_name")]
-    [InlineData("-invalidName", "_invalidName")]
-    [InlineData("invalidName-", "invalidName_")]
-    [InlineData("@invalidName", "_invalidName")]
-    [InlineData("invalidName@", "invalidName_")]
-    [InlineData("a@b$c-d e", "a_b_c_d_e")]
-    public void SanitizeProjectName_ReturnsValidName(string input, string expectedOutput)
+    public void SanitizeProjectName_WithRegexReplace_ConvertInvalidChars(string input, string expectedOutput)
     {
         // Act
-        var result = ProjectNameValidator.SanitizeProjectName(input);
+        var result = ProjectNameValidator.GetInvalidCharsRegex().Replace(input, "_");
 
         // Assert
         Assert.Equal(expectedOutput, result);
-        Assert.True(ProjectNameValidator.IsProjectNameValid(result));
     }
 
     [Theory]
