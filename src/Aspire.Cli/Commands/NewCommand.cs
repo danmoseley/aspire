@@ -261,7 +261,7 @@ internal class NewCommandPrompter(IInteractionService interactionService) : INew
                 else
                 {
                     var sanitizedName = ProjectNameValidator.SanitizeProjectName(name);
-                    return ValidationResult.Warning($"Invalid project name. It will be sanitized to '{sanitizedName}'.");
+                    return ValidationResult.Warning($"Invalid project name. It will be modified to '{sanitizedName}'.");
                 }
             },
             cancellationToken: cancellationToken);
