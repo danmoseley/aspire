@@ -113,6 +113,12 @@ internal class ConsoleInteractionService : IInteractionService
         _ansiConsole.WriteLine(message);
     }
 
+    public void DisplayMarkdown(string markdown)
+    {
+        var spectreMarkup = MarkdownToSpectreConverter.ConvertToSpectre(markdown);
+        _ansiConsole.MarkupLine(spectreMarkup);
+    }
+
     public void WriteConsoleLog(string message, int? lineNumber = null, string? type = null, bool isErrorMessage = false)
     {
         var style = isErrorMessage ? s_errorMessageStyle
@@ -194,8 +200,8 @@ internal class ConsoleInteractionService : IInteractionService
     public void DisplayVersionUpdateNotification(string newerVersion)
     {
         _ansiConsole.WriteLine();
-        _ansiConsole.MarkupLine($"[yellow]A new version of the Aspire CLI is available: {newerVersion}[/]");
-        _ansiConsole.MarkupLine($"[dim]For more information, see: [link]{UpdateUrl}[/][/]");
+        _ansiConsole.MarkupLine(string.Format(CultureInfo.CurrentCulture, InteractionServiceStrings.NewCliVersionAvailable, newerVersion));
+        _ansiConsole.MarkupLine(string.Format(CultureInfo.CurrentCulture, InteractionServiceStrings.MoreInfoNewCliVersion, UpdateUrl));
         _ansiConsole.WriteLine();
     }
 }

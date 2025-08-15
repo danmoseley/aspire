@@ -17,7 +17,7 @@ public class ResourceOutgoingPeerResolverTests
     private static ResourceViewModel CreateResource(string name, string? serviceAddress = null, int? servicePort = null, string? displayName = null, KnownResourceState? state = null)
     {
         return ModelTestHelpers.CreateResource(
-            appName: name,
+            resourceName: name,
             displayName: displayName,
             state: state,
             urls: serviceAddress is null || servicePort is null ? [] : [new UrlViewModel(name, new($"http://{serviceAddress}:{servicePort}"), isInternal: false, isInactive: false, displayProperties: UrlDisplayPropertiesViewModel.Empty)]);
@@ -334,7 +334,7 @@ public class ResourceOutgoingPeerResolverTests
         };
 
         return ModelTestHelpers.CreateResource(
-            appName: name,
+            resourceName: name,
             resourceType: KnownResourceTypes.ConnectionString,
             properties: properties);
     }
@@ -352,7 +352,7 @@ public class ResourceOutgoingPeerResolverTests
         };
 
         return ModelTestHelpers.CreateResource(
-            appName: name,
+            resourceName: name,
             resourceType: KnownResourceTypes.Parameter,
             properties: properties);
     }
@@ -412,6 +412,7 @@ public class ResourceOutgoingPeerResolverTests
         public ValueTask DisposeAsync() => ValueTask.CompletedTask;
         public Task<ResourceCommandResponseViewModel> ExecuteResourceCommandAsync(string resourceName, string resourceType, CommandViewModel command, CancellationToken cancellationToken) => throw new NotImplementedException();
         public IAsyncEnumerable<IReadOnlyList<ResourceLogLine>> GetConsoleLogs(string resourceName, CancellationToken cancellationToken) => throw new NotImplementedException();
+        public ResourceViewModel? GetResource(string resourceName) => throw new NotImplementedException();
         public Task SendInteractionRequestAsync(WatchInteractionsRequestUpdate request, CancellationToken cancellationToken) => throw new NotImplementedException();
         public IAsyncEnumerable<IReadOnlyList<ResourceLogLine>> SubscribeConsoleLogs(string resourceName, CancellationToken cancellationToken) => throw new NotImplementedException();
         public IAsyncEnumerable<WatchInteractionsResponseUpdate> SubscribeInteractionsAsync(CancellationToken cancellationToken) => throw new NotImplementedException();

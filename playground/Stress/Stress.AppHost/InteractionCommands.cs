@@ -54,9 +54,12 @@ internal static class InteractionCommands
                _ = interactionService.PromptMessageBoxAsync("Success <strong>bar</strong>", "The **command** successfully executed.", new MessageBoxInteractionOptions { Intent = MessageIntent.Success, EnableMessageMarkdown = true });
                _ = interactionService.PromptMessageBoxAsync("Success <strong>bar</strong>", "Multiline 1\r\n\r\nMultiline 2", new MessageBoxInteractionOptions { Intent = MessageIntent.Success, EnableMessageMarkdown = true });
 
-               _ = await interactionService.PromptInputAsync("Text <strong>request</strong>", "Provide **your** name", "<strong>Name</strong>", "Enter <strong>your</strong> name");
-               _ = await interactionService.PromptInputAsync("Text <strong>request</strong>", "Provide **your** name", "<strong>Name</strong>", "Enter <strong>your</strong> name", new InputsDialogInteractionOptions { EnableMessageMarkdown = true });
-               _ = await interactionService.PromptInputAsync("Text <strong>request</strong>", "Multiline 1\r\n\r\nMultiline 2", "<strong>Name</strong>", "Enter <strong>your</strong> name", new InputsDialogInteractionOptions { EnableMessageMarkdown = true });
+               var inputNoMarkdown = new InteractionInput { Label = "<strong>Name</strong>", InputType = InputType.Text, Placeholder = "Enter <strong>your</strong> name.", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id massa arcu. Morbi ac risus eget augue venenatis hendrerit. Morbi posuere, neque id efficitur ultrices, velit augue suscipit ante, vitae lacinia elit risus nec dui.\r\n\r\nFor more information about the `IInteractionService`, see https://learn.microsoft.com." };
+               var inputHasMarkdown = new InteractionInput { Label = "<strong>Name</strong>", InputType = InputType.Text, Placeholder = "Enter <strong>your</strong> name.", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id massa arcu. Morbi ac risus eget augue venenatis hendrerit. Morbi posuere, neque id efficitur ultrices, velit augue suscipit ante, vitae lacinia elit risus nec dui.\r\n\r\nFor more information about the `IInteractionService`, see https://learn.microsoft.com.", EnableDescriptionMarkdown = true };
+
+               _ = await interactionService.PromptInputAsync("Text <strong>request</strong>", "Provide **your** name. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id massa arcu. Morbi ac risus eget augue venenatis hendrerit. Morbi posuere, neque id efficitur ultrices, velit augue suscipit ante, vitae lacinia elit risus nec dui. For more information about the `IInteractionService`, see https://learn.microsoft.com.", inputNoMarkdown);
+               _ = await interactionService.PromptInputAsync("Text <strong>request</strong>", "Provide **your** name. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id massa arcu. Morbi ac risus eget augue venenatis hendrerit. Morbi posuere, neque id efficitur ultrices, velit augue suscipit ante, vitae lacinia elit risus nec dui. For more information about the `IInteractionService`, see https://learn.microsoft.com.", inputHasMarkdown, new InputsDialogInteractionOptions { EnableMessageMarkdown = true });
+               _ = await interactionService.PromptInputAsync("Text <strong>request</strong>", "Provide **your** name.\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id massa arcu. Morbi ac risus eget augue venenatis hendrerit. Morbi posuere, neque id efficitur ultrices, velit augue suscipit ante, vitae lacinia elit risus nec dui.\r\n\r\nFor more information about the `IInteractionService`, see https://learn.microsoft.com.", inputHasMarkdown, new InputsDialogInteractionOptions { EnableMessageMarkdown = true });
 
                return CommandResults.Success();
            })
@@ -165,6 +168,47 @@ internal static class InteractionCommands
 
                return CommandResults.Success();
            })
+           .WithCommand("dismiss-interaction", "Dismiss interaction tests", executeCommand: commandContext =>
+           {
+               var interactionService = commandContext.ServiceProvider.GetRequiredService<IInteractionService>();
+
+               RunInteractionWithDismissValues(nameof(IInteractionService.PromptNotificationAsync), (showDismiss, title) =>
+               {
+                   return interactionService.PromptNotificationAsync(
+                       title: title,
+                       message: string.Empty,
+                       options: new NotificationInteractionOptions { ShowDismiss = showDismiss },
+                       cancellationToken: commandContext.CancellationToken);
+               });
+               RunInteractionWithDismissValues(nameof(IInteractionService.PromptConfirmationAsync), (showDismiss, title) =>
+               {
+                   return interactionService.PromptConfirmationAsync(
+                       title: title,
+                       message: string.Empty,
+                       options: new MessageBoxInteractionOptions { ShowDismiss = showDismiss },
+                       cancellationToken: commandContext.CancellationToken);
+               });
+               RunInteractionWithDismissValues(nameof(IInteractionService.PromptMessageBoxAsync), (showDismiss, title) =>
+               {
+                   return interactionService.PromptMessageBoxAsync(
+                       title: title,
+                       message: string.Empty,
+                       options: new MessageBoxInteractionOptions { ShowDismiss = showDismiss },
+                       cancellationToken: commandContext.CancellationToken);
+               });
+               RunInteractionWithDismissValues(nameof(IInteractionService.PromptInputAsync), (showDismiss, title) =>
+               {
+                   return interactionService.PromptInputAsync(
+                       title: title,
+                       message: string.Empty,
+                       inputLabel: "Input",
+                       placeHolder: "Enter input",
+                       options: new InputsDialogInteractionOptions { ShowDismiss = showDismiss },
+                       cancellationToken: commandContext.CancellationToken);
+               });
+
+               return Task.FromResult(CommandResults.Success());
+           })
            .WithCommand("many-values", "Many values", executeCommand: async commandContext =>
            {
                var interactionService = commandContext.ServiceProvider.GetRequiredService<IInteractionService>();
@@ -201,6 +245,14 @@ internal static class InteractionCommands
            });
 
         return resource;
+    }
+
+    private static void RunInteractionWithDismissValues(string title, Func<bool?, string, Task> action)
+    {
+        // Don't wait for interactions to complete, i.e. await tasks.
+        _ = action(null, $"{title} - ShowDismiss = null");
+        _ = action(true, $"{title} - ShowDismiss = true");
+        _ = action(false, $"{title} - ShowDismiss = false");
     }
 }
 
